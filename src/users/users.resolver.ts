@@ -28,6 +28,6 @@ export class UsersResolver {
 
   @Mutation(returns => User, { nullable: true })
   updateUser(@Args('id') id: number, @Args('createUserInput') user: UserDto): Promise<User> {
-    return this.usersService.update(id. user);
+    return this.usersService.update(id, user);
   }
 }

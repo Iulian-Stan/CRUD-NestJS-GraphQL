@@ -14,6 +14,4 @@ Start the application by running
 ```bash
 npm start
 ```
-Navigate to the following URL in your web browser - [http://127.0.0.1:9090/v1.0/ui/](http://127.0.0.1:9090/v1.0/ui/). It will open the OpenAPI generate API documentation based on code annotations. The application will create an initially empty DB . Use the POST or PUT methods to populate the DB with some sample data in order to be able to test other HTTP methods.
-
-TODO: Return corresct HTTP status codes
+Navigate to the following URL in your web browser - [http://127.0.0.1:9090/graphql/](http://127.0.0.1:9090/graphql/). It will open the OpenAPI generate API documentation based on code annotations. The application will create an initially empty DB . Use the POST or PUT methods to populate the DB with some sample data in order to be able to test other HTTP methods.

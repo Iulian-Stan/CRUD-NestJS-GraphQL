@@ -23,7 +23,8 @@ export class UsersService {
 
   async delete(id: number): Promise<User> {
     const user = await this.userModel.findByPk(id);
-    return user ? user.destroy() : null;
+    if (user) await user.destroy();
+    return user;
   }
 
   async update(id: number, user: UserDto): Promise<User> {
@@ -32,6 +33,6 @@ export class UsersService {
       oldUser.update({
         firstName: user.firstName,
         lastName: user.lastName
-      }) : null;
+      }) : oldUser;
   }
 }

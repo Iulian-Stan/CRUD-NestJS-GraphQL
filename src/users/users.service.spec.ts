@@ -30,12 +30,13 @@ describe('UserService', () => {
         {
           provide: getModelToken(User),
           useValue: {
+            create: jest.fn().mockResolvedValue(oneUser),
             findAll: jest.fn().mockResolvedValue(usersArray),
             findByPk: jest.fn().mockResolvedValue(oneUser),
-            create: jest.fn().mockResolvedValue(oneUser)
-          },
-        },
-      ],
+            destroy: jest.fn()
+          }
+        }
+      ]
     }).compile();
 
     service = module.get<UsersService>(UsersService);
@@ -77,17 +78,17 @@ describe('UserService', () => {
   });
 
   describe('delete()', () => {
-    it('should remove a user if found', async () => {
-      const findSpy = jest.spyOn(model, 'findByPk')
-      .mockReturnValue({ destroy: jest.fn() } as any);
+    it('should delete a user if found', async () => {
+      const mockUser = { destroy: jest.fn(), ...oneUser };
+      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(mockUser as any);
       const retVal = await service.delete(2);
       expect(findSpy).toBeCalledWith(2);
-      expect(retVal).toBeUndefined();
+      expect(mockUser.destroy).toBeCalled();
+      expect(retVal).toMatchObject(oneUser);
     });
 
     it('should do nothing if user not found', async () => {
-      const findSpy = jest.spyOn(model, 'findByPk')
-      .mockReturnValue({ destroy: jest.fn() } as any);
+      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(undefined);
       const retVal = await service.delete(2);
       expect(findSpy).toBeCalledWith(2);
       expect(retVal).toBeUndefined();
@@ -96,17 +97,17 @@ describe('UserService', () => {
 
   describe('update()', () => {
     it('should update a user if found', async () => {
-      const findSpy = jest.spyOn(model, 'findByPk')
-      .mockReturnValue({ destroy: jest.fn() } as any);
-      const retVal = await service.update(2);
+      const mockUser = { update: jest.fn().mockResolvedValue(oneUser) };
+      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(mockUser as any);
+      const retVal = await service.update(2, oneUser);
       expect(findSpy).toBeCalledWith(2);
-      expect(retVal).toBeUndefined();
+      expect(mockUser.update).toBeCalledWith(oneUser);
+      expect(retVal).toEqual(oneUser);
     });
 
     it('should do nothing if user not found', async () => {
-      const findSpy = jest.spyOn(model, 'findByPk')
-      .mockReturnValue({ destroy: jest.fn() } as any);
-      const retVal = await service.update(2);
+      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(undefined);
+      const retVal = await service.update(2, oneUser);
       expect(findSpy).toBeCalledWith(2);
       expect(retVal).toBeUndefined();
     });
