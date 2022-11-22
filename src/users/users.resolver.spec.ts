@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserDto } from './model';
 import { UsersResolver } from './users.resolver';
 import { UsersService } from './users.service';
+import { BooksService } from '../books/books.service';
 
 const userDto: UserDto = {
   firstName: 'firstName #1',
@@ -36,6 +37,10 @@ describe('UsersResolver', () => {
             delete: jest.fn(),
             update: jest.fn()
           }
+        },
+        {
+          provide: BooksService,
+          useValue: {}
         }
       ]
     }).compile();
