@@ -14,6 +14,10 @@ export class Book extends Model {
 
   @Field()
   @Column
+  author: string;
+
+  @Field()
+  @Column
   description: string;
 
   @ForeignKey(type => User)

@@ -9,6 +9,7 @@ export class BooksService {
   create(book: BookDto): Promise<Book> {
     return this.bookModel.create({
       title: book.title,
+      author: book.author,
       description: book.description,
       ownerId: book.ownerId
     });
@@ -36,13 +37,14 @@ export class BooksService {
     return book;
   }
 
-  async update(id: number, book: BookDto): Promise<Book> {
-    const oldBook = await this.bookModel.findByPk(id);
-    return oldBook ?
-      oldBook.update({
-        title: book.title,
-        description: book.description,
-        ownerId: book.ownerId
-      }) : oldBook;
+  async update(id: number, bookDto: BookDto): Promise<Book> {
+    const book = await this.bookModel.findByPk(id);
+    return book ?
+      book.update({
+        title: bookDto.title,
+        author: bookDto.author,
+        description: bookDto.description,
+        ownerId: bookDto.ownerId
+      }) : book;
   }
 }

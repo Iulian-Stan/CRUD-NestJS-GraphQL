@@ -5,14 +5,16 @@
 type Book {
   id: Int!
   title: String!
+  author: String!
   description: String!
   owner: User!
 }
 
 type User {
   id: Int!
-  firstName: String!
-  lastName: String!
+  name: String!
+  email: String!
+  password: String!
   books: [Book!]
 }
 
@@ -33,12 +35,14 @@ type Mutation {
 }
 
 input UserDto {
-  firstName: String!
-  lastName: String!
+  name: String!
+  email: String!
+  password: String!
 }
 
 input BookDto {
   title: String!
+  author: String!
   description: String!
   ownerId: Int!
 }

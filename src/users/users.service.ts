@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User, UserDto } from './model';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User) private readonly userModel: typeof User) {}
 
-  create(user: UserDto): Promise<User> {
+  async create(user: UserDto): Promise<User> {
     return this.userModel.create({
-      firstName: user.firstName,
-      lastName: user.lastName
+      name: user.name,
+      email: user.email,
+      password: await bcrypt.hash(user.password, 10)
     });
   }
 
@@ -27,12 +29,13 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, user: UserDto): Promise<User> {
-    const oldUser = await this.userModel.findByPk(id);
-    return oldUser ?
-      oldUser.update({
-        firstName: user.firstName,
-        lastName: user.lastName
-      }) : oldUser;
+  async update(id: number, userDto: UserDto): Promise<User> {
+    const user = await this.userModel.findByPk(id);
+    return user ?
+      user.update({
+        name: userDto.name,
+        email: userDto.email,
+        password: await bcrypt.hash(userDto.password, 10)
+      }) : user;
   }
 }

@@ -6,6 +6,9 @@ export class BookDto {
   title: string;
 
   @Field()
+  author: string;
+
+  @Field()
   description: string;
 
   @Field(type => Int)

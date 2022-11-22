@@ -1,27 +1,30 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/sequelize';
-import { User } from './model';
+import { User, UserDto } from './model';
 import { UsersService } from './users.service';
 
-const usersArray = [
+const usersArray: UserDto[] = [
   {
-    firstName: 'firstName #1',
-    lastName: 'lastName #1',
+    name: 'name #1',
+    email: 'email #1',
+    password: 'pass #1'
   },
   {
-    firstName: 'firstName #2',
-    lastName: 'lastName #2',
+    name: 'name #2',
+    email: 'email #2',
+    password: 'pass #1'
   },
 ];
 
-const oneUser = {
-  firstName: 'firstName #1',
-  lastName: 'lastName #1',
+const oneUser: UserDto = {
+  name: 'name #1',
+  email: 'email #1',
+  password: 'pass #1'
 };
 
 describe('UserService', () => {
-  let service: UsersService;
-  let model: typeof User;
+  let usersService: UsersService;
+  let usersModel: typeof User;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -39,40 +42,31 @@ describe('UserService', () => {
       ]
     }).compile();
 
-    service = module.get<UsersService>(UsersService);
-    model = module.get<typeof User>(getModelToken(User));
+    usersService = module.get<UsersService>(UsersService);
+    usersModel = module.get<typeof User>(getModelToken(User));
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(usersService).toBeDefined();
   });
 
   describe('create()', () => {
     it('should successfully insert a user', () => {
-      const oneUser = {
-        firstName: 'firstName #1',
-        lastName: 'lastName #1',
-      };
-      expect(
-        service.create({
-          firstName: 'firstName #1',
-          lastName: 'lastName #1',
-        }),
-      ).resolves.toEqual(oneUser);
+      expect(usersService.create(oneUser)).resolves.toEqual(oneUser);
     });
   });
 
   describe('findAll()', () => {
     it('should return an array of users', async () => {
-      const users = await service.findAll();
+      const users = await usersService.findAll();
       expect(users).toEqual(usersArray);
     });
   });
 
   describe('findOne()', () => {
     it('should get a single user', () => {
-      const findSpy = jest.spyOn(model, 'findByPk');
-      expect(service.findOne(1)).resolves.toEqual(oneUser);
+      const findSpy = jest.spyOn(usersModel, 'findByPk');
+      expect(usersService.findOne(1)).resolves.toEqual(oneUser);
       expect(findSpy).toBeCalledWith(1);
     });
   });
@@ -80,16 +74,16 @@ describe('UserService', () => {
   describe('delete()', () => {
     it('should delete a user if found', async () => {
       const mockUser = { destroy: jest.fn(), ...oneUser };
-      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(mockUser as any);
-      const retVal = await service.delete(2);
+      const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(mockUser as any);
+      const retVal = await usersService.delete(2);
       expect(findSpy).toBeCalledWith(2);
       expect(mockUser.destroy).toBeCalled();
       expect(retVal).toMatchObject(oneUser);
     });
 
     it('should do nothing if user not found', async () => {
-      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(undefined);
-      const retVal = await service.delete(2);
+      const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(undefined);
+      const retVal = await usersService.delete(2);
       expect(findSpy).toBeCalledWith(2);
       expect(retVal).toBeUndefined();
     });
@@ -98,16 +92,16 @@ describe('UserService', () => {
   describe('update()', () => {
     it('should update a user if found', async () => {
       const mockUser = { update: jest.fn().mockResolvedValue(oneUser) };
-      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(mockUser as any);
-      const retVal = await service.update(2, oneUser);
+      const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(mockUser as any);
+      const retVal = await usersService.update(2, oneUser);
       expect(findSpy).toBeCalledWith(2);
-      expect(mockUser.update).toBeCalledWith(oneUser);
+      expect(mockUser.update).toBeCalled();
       expect(retVal).toEqual(oneUser);
     });
 
     it('should do nothing if user not found', async () => {
-      const findSpy = jest.spyOn(model, 'findByPk').mockReturnValue(undefined);
-      const retVal = await service.update(2, oneUser);
+      const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(undefined);
+      const retVal = await usersService.update(2, oneUser);
       expect(findSpy).toBeCalledWith(2);
       expect(retVal).toBeUndefined();
     });

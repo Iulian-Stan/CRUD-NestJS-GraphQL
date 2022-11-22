@@ -10,11 +10,15 @@ export class User extends Model {
 
   @Field()
   @Column
-  firstName: string;
+  name: string;
 
   @Field()
   @Column
-  lastName: string;
+  email: string;
+
+  @Field()
+  @Column
+  password: string;
 
   @Field(type => [Book], { nullable: true })
   @HasMany(() => Book, { foreignKey: { allowNull: false }})

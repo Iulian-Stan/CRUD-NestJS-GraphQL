@@ -5,24 +5,28 @@ import { UsersService } from './users.service';
 import { BooksService } from '../books/books.service';
 
 const userDto: UserDto = {
-  firstName: 'firstName #1',
-  lastName: 'lastName #1',
+  name: 'name #1',
+  email: 'email #1',
+  password: 'pass #1'
 };
 
 const users: UserDto[] = [
   {
-    firstName: 'firstName #1',
-    lastName: 'lastName #1'
+    name: 'name #1',
+    email: 'email #1',
+    password: 'pass #1'
   },
   {
-    firstName: 'firstName #2',
-    lastName: 'lastName #2'
+    name: 'name #2',
+    email: 'email #2',
+    password: 'pass #2'
   }
 ];
 
 describe('UsersResolver', () => {
   let usersResolver: UsersResolver;
   let usersService: UsersService;
+  let booksService: BooksService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -47,6 +51,7 @@ describe('UsersResolver', () => {
 
     usersResolver = app.get<UsersResolver>(UsersResolver);
     usersService = app.get<UsersService>(UsersService);
+    booksService = app.get<BooksService>(BooksService);
   });
 
   it('should be defined', () => {
