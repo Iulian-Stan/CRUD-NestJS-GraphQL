@@ -8,19 +8,19 @@ export class User extends Model {
   @Field(type => Int)
   id: number;
 
-  @Field()
+  @Field({ description: 'User\'s name' })
   @Column
   name: string;
 
-  @Field()
+  @Field({ description: 'User\'s email' })
   @Column
   email: string;
 
-  @Field()
+  @Field({ description: 'User\'s password' })
   @Column
   password: string;
 
-  @Field(type => [Book], { nullable: true })
+  @Field(type => [Book], { nullable: true,  description: 'User\'s books' })
   @HasMany(() => Book, { foreignKey: { allowNull: false }})
   books: Book[];
 }

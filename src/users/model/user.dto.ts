@@ -2,12 +2,12 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class UserDto {
-  @Field()
+  @Field({ description: 'User\'s name' })
   name: string;
 
-  @Field()
+  @Field({ description: 'User\'s email' })
   email: string;
 
-  @Field()
+  @Field({ description: 'User\'s password' })
   password: string;
 }

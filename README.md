@@ -1,7 +1,11 @@
-# NestJS
-Simple CRUD application implemented using NestJS framework
-* [NestJS](https://github.com/nestjs/nest) - A progressive Node.js framework for building efficient, scalable, and enterprise-grade server-side applications on top of TypeScript & JavaScript (ES6, ES7, ES8)
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
+<p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+
+## Description
+CRUD application using NestJS framework Sequelize and GraphQL.
 
 ## Installation
 Install of the dependencies from *package.json*
@@ -14,4 +18,4 @@ Start the application by running
 ```bash
 npm start
 ```
-Navigate to the following URL in your web browser - [http://127.0.0.1:9090/graphql/](http://127.0.0.1:9090/graphql/). It will open the OpenAPI generate API documentation based on code annotations. The application will create an initially empty DB . Use the POST or PUT methods to populate the DB with some sample data in order to be able to test other HTTP methods.
+Navigate to the following URL in your web browser - [http://127.0.0.1:4000/graphql/](http://127.0.0.1:4000/graphql/).

@@ -51,8 +51,9 @@ describe('UserService', () => {
   });
 
   describe('create()', () => {
-    it('should successfully insert a user', () => {
-      expect(usersService.create(oneUser)).resolves.toEqual(oneUser);
+    it('should successfully insert a user', async () => {
+      const retVal = await usersService.create(oneUser);
+      expect(retVal).toEqual(oneUser);
     });
   });
 

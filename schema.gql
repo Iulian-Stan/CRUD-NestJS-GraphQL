@@ -4,45 +4,73 @@
 
 type Book {
   id: Int!
+
+  """Book title"""
   title: String!
+
+  """Book author"""
   author: String!
+
+  """Book description"""
   description: String!
+
+  """Book's owner"""
   owner: User!
 }
 
 type User {
   id: Int!
+
+  """User's name"""
   name: String!
+
+  """User's email"""
   email: String!
+
+  """User's password"""
   password: String!
+
+  """User's books"""
   books: [Book!]
 }
 
 type Query {
-  allUsers: [User!]!
-  user(id: Float!): User
   allBooks: [Book!]!
   book(id: Float!): Book
+  allUsers: [User!]!
+  user(id: Float!): User
 }
 
 type Mutation {
-  createUser(createUserInput: UserDto!): User!
-  deleteUser(id: Float!): User
-  updateUser(id: Float!, updateUserInput: UserDto!): User
   createBook(createBookInput: BookDto!): Book!
   deleteBook(id: Float!): Book
   updateBook(id: Float!, updateBookInput: BookDto!): Book
-}
-
-input UserDto {
-  name: String!
-  email: String!
-  password: String!
+  createUser(createUserInput: UserDto!): User!
+  deleteUser(id: Float!): User
+  updateUser(id: Float!, updateUserInput: UserDto!): User
 }
 
 input BookDto {
+  """Book title"""
   title: String!
+
+  """Book author"""
   author: String!
+
+  """Book description"""
   description: String!
+
+  """Owner ID"""
   ownerId: Int!
+}
+
+input UserDto {
+  """User's name"""
+  name: String!
+
+  """User's email"""
+  email: String!
+
+  """User's password"""
+  password: String!
 }

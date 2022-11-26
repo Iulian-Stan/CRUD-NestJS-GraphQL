@@ -2,15 +2,15 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class BookDto {
-  @Field()
+  @Field({ description: 'Book title' })
   title: string;
 
-  @Field()
+  @Field({ description: 'Book author' })
   author: string;
 
-  @Field()
+  @Field({ description: 'Book description' })
   description: string;
 
-  @Field(type => Int)
+  @Field(type => Int, { description: 'Owner ID' })
   readonly ownerId: number;
 }
