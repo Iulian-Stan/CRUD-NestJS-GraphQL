@@ -21,22 +21,22 @@ export class UsersResolver {
 
   @ResolveField(returns => [Book])
   async books(@Parent() user): Promise<Book[]> {
-    const { id } = user;
-    return this.booksService.findByUser(id);
+    const { email } = user;
+    return this.booksService.findByUser(email);
   }
 
   @Query(returns => User, { nullable: true })
-  user(@Args('id') id: number): Promise<User> {
-    return this.usersService.findOne(id);
+  user(@Args('email') email: string): Promise<User> {
+    return this.usersService.findOne(email);
   }
 
   @Mutation(returns => User, { nullable: true })
-  deleteUser(@Args('id') id: number): Promise<User> {
-    return this.usersService.delete(id);
+  deleteUser(@Args('email') email: string): Promise<User> {
+    return this.usersService.delete(email);
   }
 
   @Mutation(returns => User, { nullable: true })
-  updateUser(@Args('id') id: number, @Args('updateUserInput') user: UserDto): Promise<User> {
-    return this.usersService.update(id, user);
+  updateUser(@Args('email') email: string, @Args('updateUserInput') user: UserDto): Promise<User> {
+    return this.usersService.update(email, user);
   }
 }

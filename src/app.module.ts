@@ -6,14 +6,17 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { UsersModule } from './users/users.module';
 import { BooksModule } from './books/books.module';
+import { AuthModule } from './auth/auth.module';
 import configuration from './config/configuration';
 
 @Module({
   imports: [
+    AuthModule,
     BooksModule,
     UsersModule,
     ConfigModule.forRoot({
-      load: [configuration]
+      load: [configuration],
+      isGlobal: true
     }),
     SequelizeModule.forRoot({
       dialect: 'sqlite',

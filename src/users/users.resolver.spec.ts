@@ -16,11 +16,11 @@ const user2Dto: UserDto = {
   password: 'pass #2'
 };
 
+const email = 'email';
 
 describe('UsersResolver', () => {
   let usersResolver: UsersResolver;
   let usersService: UsersService;
-  let booksService: BooksService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
@@ -45,7 +45,6 @@ describe('UsersResolver', () => {
 
     usersResolver = app.get<UsersResolver>(UsersResolver);
     usersService = app.get<UsersService>(UsersService);
-    booksService = app.get<BooksService>(BooksService);
   });
 
   it('should be defined', () => {
@@ -68,22 +67,22 @@ describe('UsersResolver', () => {
 
   describe('findOne()', () => {
     it('should find a user', () => {
-      expect(usersResolver.user(1)).resolves.toEqual(user1Dto);
+      expect(usersResolver.user(email)).resolves.toEqual(user1Dto);
       expect(usersService.findOne).toBeCalled();
     });
   });
 
   describe('deleteUser()', () => {
     it('should delete a user', () => {
-      usersResolver.deleteUser(2);
-      expect(usersService.delete).toBeCalledWith(2);
+      usersResolver.deleteUser(email);
+      expect(usersService.delete).toBeCalledWith(email);
     });
   });
 
   describe('updateUser()', () => {
     it('should update a user', () => {
-      expect(usersResolver.updateUser(1, user2Dto)).resolves.toEqual(user2Dto);
-      expect(usersService.update).toBeCalledWith(1, user2Dto);
+      expect(usersResolver.updateUser(email, user2Dto)).resolves.toEqual(user2Dto);
+      expect(usersService.update).toBeCalledWith(email, user2Dto);
     });
   });
 });

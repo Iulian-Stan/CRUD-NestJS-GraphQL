@@ -5,20 +5,21 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import * as request from 'supertest';
 import { UsersModule } from '../../src/users/users.module';
+import { UserDto } from '../../src/users/model';
 
 describe('Users - /users (e2e)', () => {
   const gql = '/graphql';
 
-  let userId = 0;
-
-  const user = {
+  const user: UserDto = {
     name: 'name #1',
-    email: 'email #1'
+    email: 'email #1',
+    password: 'pass #1'
   };
 
-  const updatedUser = {
+  const updatedUser: UserDto = {
     name: 'name #2',
-    email: 'email #2'
+    email: 'email #1',
+    password: 'pass #2'
   };
 
   let app: INestApplication;
@@ -48,31 +49,39 @@ describe('Users - /users (e2e)', () => {
   it('Create user', () => {
     return request(app.getHttpServer())
       .post(gql)
-      .send({query: 'mutation {createUser(createUserInput: {name: "name #1", email: "email #1", password: "pass #1"}) {id name email}}'})
+      .send({query: 'mutation {createUser(createUserInput: {name: "' + user.name + '", email: "' + user.email + '", password: "' + user.password + '"}) {name email}}'})
       .expect(200)
       .then(res => {
-        expect(res.body.data.createUser).toMatchObject(user);
-        userId = res.body.data.createUser.id;
+        expect(res.body.data.createUser).toEqual({
+          name: user.name,
+          email: user.email
+        });
       });
   });
 
   it('Get all users', () => {
     return request(app.getHttpServer())
       .post(gql)
-      .send({query: "{allUsers {name email}}"})
+      .send({query: '{allUsers {name email}}'})
       .expect(200)
       .then(res => {
-        expect(res.body.data.allUsers).toContainEqual(user);
+        expect(res.body.data.allUsers).toContainEqual({
+          name: user.name,
+          email: user.email
+        });
       });
   });
 
   it('Get one user', () => {
     return request(app.getHttpServer())
       .post(gql)
-      .send({query: '{user(id: ' + userId + ') {name email}}'})
+      .send({query: '{user(email: "' + user.email +'") {name email}}'})
       .expect(200)
       .then(res => {
-        expect(res.body.data.user).toEqual(user);
+        expect(res.body.data.user).toEqual({
+          name: user.name,
+          email: user.email
+        });
       });
   });
 
@@ -80,19 +89,25 @@ describe('Users - /users (e2e)', () => {
     return request(app.getHttpServer())
       .post(gql)
       .expect(200)
-      .send({query: 'mutation {updateUser(id: ' + userId + ', updateUserInput: {name: "name #2", email: "email #2", password: "pass #2"}) {name email}}'})
+      .send({query: 'mutation {updateUser(email: "' + user.email + '", updateUserInput: {name: "' + updatedUser.name + '", email: "' + updatedUser.email + '", password: "' + updatedUser.password + '"}) {name email}}'})
       .then(res => {
-        expect(res.body.data.updateUser).toEqual(updatedUser);
+        expect(res.body.data.updateUser).toEqual({
+          name: updatedUser.name,
+          email: updatedUser.email
+        });
       });
   });
 
   it('Delete user', () => {
     return request(app.getHttpServer())
       .post(gql)
-      .send({query: 'mutation {deleteUser(id: ' + userId + ') {name email}}'})
+      .send({query: 'mutation {deleteUser(email: "' + updatedUser.email + '") {name email}}'})
       .expect(200)
       .then(res => {
-        expect(res.body.data.deleteUser).toEqual(updatedUser);
+        expect(res.body.data.deleteUser).toEqual({
+          name: updatedUser.name,
+          email: updatedUser.email
+        });
       });
   });
 

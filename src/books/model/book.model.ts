@@ -8,22 +8,22 @@ export class Book extends Model {
   @Field(type => Int)
   id: number;
 
-  @Field({ description: 'Book title' })
   @Column
+  @Field({ description: 'Book title' })
   title: string;
 
-  @Field({ description: 'Book author' })
   @Column
+  @Field({ description: 'Book author' })
   author: string;
 
-  @Field({ description: 'Book description' })
   @Column
+  @Field({ description: 'Book description' })
   description: string;
 
   @ForeignKey(type => User)
-  ownerId: number;
+  ownerId: string;
 
-  @Field(type => User, { description: 'Book\'s owner' })
   @BelongsTo(() => User)
+  @Field(type => User, { description: 'Book\'s owner' })
   owner: User;
 }

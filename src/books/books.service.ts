@@ -19,10 +19,10 @@ export class BooksService {
     return this.bookModel.findAll();
   }
 
-  findByUser(id: number): Promise<Book[]>{
+  findByUser(email: string): Promise<Book[]>{
     return this.bookModel.findAll({ 
       where: {
-        ownerId: id
+        ownerId: email
       }
     });
   }

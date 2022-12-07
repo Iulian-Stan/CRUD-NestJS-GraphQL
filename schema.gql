@@ -19,8 +19,6 @@ type Book {
 }
 
 type User {
-  id: Int!
-
   """User's name"""
   name: String!
 
@@ -35,19 +33,30 @@ type User {
 }
 
 type Query {
+  allUsers: [User!]!
+  user(email: String!): User
   allBooks: [Book!]!
   book(id: Float!): Book
-  allUsers: [User!]!
-  user(id: Float!): User
 }
 
 type Mutation {
+  createUser(createUserInput: UserDto!): User!
+  deleteUser(email: String!): User
+  updateUser(email: String!, updateUserInput: UserDto!): User
   createBook(createBookInput: BookDto!): Book!
   deleteBook(id: Float!): Book
   updateBook(id: Float!, updateBookInput: BookDto!): Book
-  createUser(createUserInput: UserDto!): User!
-  deleteUser(id: Float!): User
-  updateUser(id: Float!, updateUserInput: UserDto!): User
+}
+
+input UserDto {
+  """User's name"""
+  name: String!
+
+  """User's email"""
+  email: String!
+
+  """User's password"""
+  password: String!
 }
 
 input BookDto {
@@ -62,15 +71,4 @@ input BookDto {
 
   """Owner ID"""
   ownerId: Int!
-}
-
-input UserDto {
-  """User's name"""
-  name: String!
-
-  """User's email"""
-  email: String!
-
-  """User's password"""
-  password: String!
 }

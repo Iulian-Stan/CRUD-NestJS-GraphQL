@@ -1,8 +1,8 @@
 import { Module, forwardRef } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Book } from './model';
-import { BooksResolver } from './books.resolver';
 import { BooksService } from './books.service';
+import { BooksResolver } from './books.resolver';
 import { UsersModule } from '../users/users.module';
 
 @Module({

@@ -1,26 +1,24 @@
-import { Column, Model, Table, HasMany } from 'sequelize-typescript';
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Column, Model, Table, HasMany, PrimaryKey } from 'sequelize-typescript';
+import { ObjectType, Field } from '@nestjs/graphql';
 import { Book } from '../../books/model';
 
 @ObjectType()
 @Table
 export class User extends Model {
-  @Field(type => Int)
-  id: number;
-
-  @Field({ description: 'User\'s name' })
   @Column
+  @Field({ description: 'User\'s name' })
   name: string;
 
-  @Field({ description: 'User\'s email' })
+  @PrimaryKey
   @Column
+  @Field({ description: 'User\'s email' })
   email: string;
 
-  @Field({ description: 'User\'s password' })
   @Column
+  @Field({ description: 'User\'s password' })
   password: string;
 
-  @Field(type => [Book], { nullable: true,  description: 'User\'s books' })
   @HasMany(() => Book, { foreignKey: { allowNull: false }})
+  @Field(type => [Book], { nullable: true,  description: 'User\'s books' })
   books: Book[];
 }

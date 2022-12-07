@@ -22,6 +22,8 @@ const oneUser: UserDto = {
   password: 'pass #1'
 };
 
+const email = 'email';
+
 describe('UserService', () => {
   let usersService: UsersService;
   let usersModel: typeof User;
@@ -67,8 +69,8 @@ describe('UserService', () => {
   describe('findOne()', () => {
     it('should get a single user', () => {
       const findSpy = jest.spyOn(usersModel, 'findByPk');
-      expect(usersService.findOne(1)).resolves.toEqual(oneUser);
-      expect(findSpy).toBeCalledWith(1);
+      expect(usersService.findOne(email)).resolves.toEqual(oneUser);
+      expect(findSpy).toBeCalledWith(email);
     });
   });
 
@@ -76,16 +78,16 @@ describe('UserService', () => {
     it('should delete a user if found', async () => {
       const mockUser = { destroy: jest.fn(), ...oneUser };
       const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(mockUser as any);
-      const retVal = await usersService.delete(2);
-      expect(findSpy).toBeCalledWith(2);
+      const retVal = await usersService.delete(email);
+      expect(findSpy).toBeCalledWith(email);
       expect(mockUser.destroy).toBeCalled();
       expect(retVal).toMatchObject(oneUser);
     });
 
     it('should do nothing if user not found', async () => {
       const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(undefined);
-      const retVal = await usersService.delete(2);
-      expect(findSpy).toBeCalledWith(2);
+      const retVal = await usersService.delete(email);
+      expect(findSpy).toBeCalledWith(email);
       expect(retVal).toBeUndefined();
     });
   });
@@ -94,16 +96,16 @@ describe('UserService', () => {
     it('should update a user if found', async () => {
       const mockUser = { update: jest.fn().mockResolvedValue(oneUser) };
       const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(mockUser as any);
-      const retVal = await usersService.update(2, oneUser);
-      expect(findSpy).toBeCalledWith(2);
+      const retVal = await usersService.update(email, oneUser);
+      expect(findSpy).toBeCalledWith(email);
       expect(mockUser.update).toBeCalled();
       expect(retVal).toEqual(oneUser);
     });
 
     it('should do nothing if user not found', async () => {
       const findSpy = jest.spyOn(usersModel, 'findByPk').mockReturnValue(undefined);
-      const retVal = await usersService.update(2, oneUser);
-      expect(findSpy).toBeCalledWith(2);
+      const retVal = await usersService.update(email, oneUser);
+      expect(findSpy).toBeCalledWith(email);
       expect(retVal).toBeUndefined();
     });
   });
